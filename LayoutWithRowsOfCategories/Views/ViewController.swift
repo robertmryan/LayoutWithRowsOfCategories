@@ -92,8 +92,10 @@ private extension ViewController {
     }
 
     func createLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
-            let section: Section = if sectionIndex == 0 { .friends } else { .areasOfImprovement(sectionIndex - 1) }
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+            guard let self else { return nil }
+
+            let section = dataSource.snapshot().sectionIdentifiers[sectionIndex]
 
             let itemSize = switch section {
             case .friends: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
